@@ -74,7 +74,7 @@ public class MyGdxGame extends ApplicationAdapter {
         if (y > 500) { y = -60; }
         if (y < -70) { y = 490; }
 
-		Gdx.gl.glClearColor(0, 0, 1, 30);
+		Gdx.gl.glClearColor(250/255f, 240/255f, 230/255f, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
