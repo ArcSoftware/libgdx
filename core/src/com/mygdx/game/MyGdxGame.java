@@ -30,8 +30,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	static final int DRAW_WIDTH = WIDTH * 3;
 	static final int DRAW_HEIGHT = HEIGHT * 3;
 
-
-
 	
 	@Override
 	public void create () {
@@ -64,9 +62,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		walkLeft = new Animation(0.2f, left, left2);
 		walkRight = new Animation(0.2f, right, right2);
 
-		if(y > 100) {
-            camera.translate(100,0);
-        }
 	}
 
 	@Override
@@ -74,14 +69,18 @@ public class MyGdxGame extends ApplicationAdapter {
 		time += Gdx.graphics.getDeltaTime();
 		move();
 
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		if (x > 650) { x = -40; }
+		if (x < -50) { x = 640; }
+        if (y > 500) { y = -60; }
+        if (y < -70) { y = 490; }
+
+		Gdx.gl.glClearColor(0, 0, 1, 30);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
 //		if (currentTexture, x > 100) {
 //		    camera.translate(200, 200);
 //        }
-
 		batch.draw(currentTexture, x, y, DRAW_WIDTH, DRAW_HEIGHT);
 		batch.end();
 	}
