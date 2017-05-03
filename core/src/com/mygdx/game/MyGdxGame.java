@@ -29,6 +29,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	Integer b;
 
 
+
 	static final float MAX_VELOCITY = 100;
 	static final int WIDTH = 18;
 	static final int HEIGHT = 26;
@@ -44,7 +45,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
 		img = new Texture("LoZ.png");
 		sound = Gdx.audio.newSound(Gdx.files.internal("godlike.wav"));
-//		music = Gdx.audio.newMusic(Gdx.files.internal("lozmusic.m4a"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("ironforge.mp3"));
 
         camera = new OrthographicCamera(1280 ,720);
         camera.update();
@@ -127,17 +128,23 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			b = 3;
-			sound.play();
+			music.pause();
+			sound.loop();
+
 			currentTexture = boostTime.getKeyFrame(time, true);
 		} else {
 			b = 1;
-//			music.play();
+			music.play();
+			sound.stop();
 		}
 
 
 		if (currentTexture == null) {
 			currentTexture = right;
 		}
+
+
+
 
 		//v = d/t == v * t = d
 		y += yv * Gdx.graphics.getDeltaTime();
