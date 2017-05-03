@@ -14,6 +14,7 @@ public class Player {
     private Animation walkForward, walkBackward, walkLeft, walkRight, boostTime;
     private Texture tiles = new Texture("tiles.png");
     private TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
+    private Circle boundingCircle;
 
     public Player() {
         down = grid[6][0];
@@ -37,6 +38,8 @@ public class Player {
         walkLeft = new Animation(0.15f, left, left2);
         walkRight = new Animation(0.15f, right, right2);
         boostTime = new Animation(0.15f, boost, boost2);
+        boundingCircle = new Circle();
+        boundingCircle.set(MyGdxGame.x + 9, MyGdxGame.y + 6, 6.5f);
     }
 
     public TextureRegion getCurrentTexture() {

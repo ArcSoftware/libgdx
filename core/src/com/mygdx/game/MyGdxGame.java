@@ -10,16 +10,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 
 public class MyGdxGame extends ApplicationAdapter {
 	public static float time;
-	float x, y, xv, yv;
+	public static float x, y, xv, yv;
 	SpriteBatch batch;
-	Texture lozImg;
+	Texture map, flag;
 	Sound sound;
 	Music music;
 	Integer b;
 	Player p;
+	Object a;
 
 	final float MAX_VELOCITY = 100;
 	final int WIDTH = 15;
@@ -30,10 +32,13 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		lozImg = new Texture("LoZ.png");
+		map = new Texture("ironforge.png");
+		flag = new Texture("ironforgeFlag.png");
+
 		sound = Gdx.audio.newSound(Gdx.files.internal("godlike.wav"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("ironforge.mp3"));
 		p = new Player();
+		a = new Object();
 	}
 
 	@Override
@@ -44,17 +49,20 @@ public class MyGdxGame extends ApplicationAdapter {
 		background();
 
 		batch.begin();
-		batch.draw(lozImg, 20, 60, 600, 357);
+		batch.draw(map, -120, -100, 1340, 870);
+		batch.draw(flag, 10, 300, 150, 160);
 		batch.draw(p.getCurrentTexture(), x, y, DRAW_WIDTH, DRAW_HEIGHT);
+//		batch.draw(a.getWall(), 100, 100, 30, 30);
 		batch.end();
+
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
 		sound.dispose();
-	}
 
+	}
 
 	float decelerate(float velocity) {
 		float deceleration = 0.75f;
@@ -64,7 +72,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 		return velocity;
 	}
-
 	void moveMainPlayer() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 			yv = MAX_VELOCITY * b;
@@ -95,6 +102,10 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		if (p.getCurrentTexture() == null) {
 			p.update("default");
+		}
+
+		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+			dispose();
 		}
 
 		//v = d/t == v * t = d
