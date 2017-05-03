@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,6 +20,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	TextureRegion currentTexture;
     OrthographicCamera camera;
     Texture img;
+	Sound sound;
+	Music music;
 
 
 	float x, y, xv, yv;
@@ -39,6 +43,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		Texture tiles = new Texture("tiles.png");
 		TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
 		img = new Texture("LoZ.png");
+		sound = Gdx.audio.newSound(Gdx.files.internal("godlike.wav"));
+//		music = Gdx.audio.newMusic(Gdx.files.internal("lozmusic.m4a"));
 
         camera = new OrthographicCamera(1280 ,720);
         camera.update();
@@ -90,6 +96,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		sound.dispose();
 	}
 
 	float decelerate(float velocity) {
@@ -120,9 +127,11 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			b = 3;
+			sound.play();
 			currentTexture = boostTime.getKeyFrame(time, true);
 		} else {
 			b = 1;
+//			music.play();
 		}
 
 
