@@ -11,8 +11,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import javax.xml.soap.Text;
-
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	TextureRegion up, up2, down, down2, left, left2, right, right2, boost, boost2;
@@ -45,11 +43,6 @@ public class MyGdxGame extends ApplicationAdapter {
         camera = new OrthographicCamera(1280 ,720);
         camera.update();
 
-//        player = new Player();
-//        player.setPos((int)cam.position.x, (int)cam.position.y);
-
-
-
 
 		down = grid[6][0];
 		up = grid[6][1];
@@ -80,7 +73,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		time += Gdx.graphics.getDeltaTime();
 		move();
 
-
 		if (x > 650) { x = -40; }
 		if (x < -50) { x = 640; }
         if (y > 500) { y = -60; }
@@ -90,9 +82,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
-//		if (currentTexture, x > 100) {
-//		    camera.translate(200, 200);
-//        }
 		batch.draw(img, 20, 60, 600, 357);
 		batch.draw(currentTexture, x, y, DRAW_WIDTH, DRAW_HEIGHT);
 		batch.end();
@@ -104,7 +93,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	}
 
 	float decelerate(float velocity) {
-		float deceleration = 0.75f; // the closer to 1, the slower the deceleration
+		float deceleration = 0.75f;
 		velocity *= deceleration;
 		if (Math.abs(velocity) < 1) {
 			velocity = 0;
