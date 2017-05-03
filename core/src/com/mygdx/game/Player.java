@@ -3,18 +3,19 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Jake on 5/3/17.
  */
 public class Player {
-    public static TextureRegion up, up2, down, down2, left, left2, right, right2, boost, boost2;
-    public static  Animation walkForward, walkBackward, walkLeft, walkRight, boostTime;
-    public static Texture tiles = new Texture("tiles.png");
-    public static TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
+    private TextureRegion up, up2, down, down2, left, left2, right, right2, boost, boost2, currentTexture;
+    private Animation walkForward, walkBackward, walkLeft, walkRight, boostTime;
+    private Texture tiles = new Texture("tiles.png");
+    private TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
 
-
-    public static void mainPlayer() {
+    public Player() {
         down = grid[6][0];
         up = grid[6][1];
         right = grid[6][3];
@@ -36,8 +37,30 @@ public class Player {
         walkLeft = new Animation(0.15f, left, left2);
         walkRight = new Animation(0.15f, right, right2);
         boostTime = new Animation(0.15f, boost, boost2);
+    }
 
+    public TextureRegion getCurrentTexture() {
+        return currentTexture;
+    }
 
-
+    public void update(String o) {
+        if (o.equals("forward")) {
+            currentTexture = walkForward.getKeyFrame(MyGdxGame.time, true);
+        }
+        if (o.equals("backward")) {
+            currentTexture  = walkBackward.getKeyFrame(MyGdxGame.time, true);
+        }
+        if (o.equals("right")) {
+            currentTexture = walkRight.getKeyFrame(MyGdxGame.time, true);
+        }
+        if (o.equals("left")) {
+            currentTexture  = walkLeft.getKeyFrame(MyGdxGame.time, true);
+        }
+        if (o.equals("default")) {
+            currentTexture  = up;
+        }
+        if (o.equals("boost")) {
+            currentTexture  = boostTime.getKeyFrame(MyGdxGame.time, true);
+        }
     }
 }
