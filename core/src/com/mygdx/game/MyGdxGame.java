@@ -15,14 +15,17 @@ import javax.xml.soap.Text;
 
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	TextureRegion up, up2, down, down2, left, left2, right, right2;
-	Animation walkForward, walkBackward, walkLeft, walkRight;
+	TextureRegion up, up2, down, down2, left, left2, right, right2, boost, boost2;
+	Animation walkForward, walkBackward, walkLeft, walkRight, boostTime;
 	TextureRegion currentTexture;
     OrthographicCamera camera;
+    Texture img;
 
 
 	float x, y, xv, yv;
 	float time;
+	Integer b;
+
 
 	static final float MAX_VELOCITY = 100;
 	static final int WIDTH = 18;
@@ -30,18 +33,23 @@ public class MyGdxGame extends ApplicationAdapter {
 	static final int DRAW_WIDTH = WIDTH * 3;
 	static final int DRAW_HEIGHT = HEIGHT * 3;
 
+
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		Texture tiles = new Texture("tiles.png");
 		TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
+		img = new Texture("LoZ.png");
 
         camera = new OrthographicCamera(1280 ,720);
         camera.update();
 
 //        player = new Player();
 //        player.setPos((int)cam.position.x, (int)cam.position.y);
+
+
+
 
 		down = grid[6][0];
 		up = grid[6][1];
@@ -56,11 +64,14 @@ public class MyGdxGame extends ApplicationAdapter {
 		down2.flip(true, false);
 		left2 = new TextureRegion(right2);
 		left2.flip(true, false);
+		boost = grid [7][5];
+		boost2 = grid [7][4];
 
 		walkForward = new Animation(0.2f, up, up2);
 		walkBackward = new Animation(0.2f, down, down2);
 		walkLeft = new Animation(0.2f, left, left2);
 		walkRight = new Animation(0.2f, right, right2);
+		boostTime = new Animation(0.15f, boost, boost2);
 
 	}
 
@@ -68,6 +79,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void render () {
 		time += Gdx.graphics.getDeltaTime();
 		move();
+
 
 		if (x > 650) { x = -40; }
 		if (x < -50) { x = 640; }
@@ -81,6 +93,7 @@ public class MyGdxGame extends ApplicationAdapter {
 //		if (currentTexture, x > 100) {
 //		    camera.translate(200, 200);
 //        }
+		batch.draw(img, 20, 60, 600, 357);
 		batch.draw(currentTexture, x, y, DRAW_WIDTH, DRAW_HEIGHT);
 		batch.end();
 	}
@@ -101,21 +114,28 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	void move() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			yv = MAX_VELOCITY;
+			yv = MAX_VELOCITY * b;
 			currentTexture = walkForward.getKeyFrame(time, true);
 		}
 		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			yv = MAX_VELOCITY * -1;
+			yv = (MAX_VELOCITY * -1) * b;
 			currentTexture = walkBackward.getKeyFrame(time, true);
 		}
 		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			xv = MAX_VELOCITY;
+			xv = MAX_VELOCITY * b;
 			currentTexture = walkRight.getKeyFrame(time, true);
 		}
 		else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			xv = MAX_VELOCITY * -1;
+			xv = (MAX_VELOCITY * -1) * b;
 			currentTexture = walkLeft.getKeyFrame(time, true);
 		}
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			b = 3;
+			currentTexture = boostTime.getKeyFrame(time, true);
+		} else {
+			b = 1;
+		}
+
 
 		if (currentTexture == null) {
 			currentTexture = right;
