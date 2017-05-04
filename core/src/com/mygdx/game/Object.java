@@ -25,7 +25,7 @@ public class Object {
         flag = new Texture("ironforgeFlag.png");
         wall = grid[5][0];
         boundingCircle = new Circle();
-//        boundingCircle.set(MyGdxGame.x + 9, MyGdxGame.y + 6, 1.5f);
+//        boundingCircle.set(Movement.x + 9, MyGdxGame.y + 6, 1.5f);
     }
 
     public Texture getHogger() {return hogger;}

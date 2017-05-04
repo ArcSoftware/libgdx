@@ -12,10 +12,8 @@ import java.util.HashMap;
 
 public class MyGdxGame extends ApplicationAdapter {
 	public static float time;
-//	public static float x, y, xv, yv;
 	Movement playerMovement;
 	SpriteBatch batch;
-//	Sound sound;
 	Player p;
 	Object hogger, flag;
 	public static Level currentLevel;

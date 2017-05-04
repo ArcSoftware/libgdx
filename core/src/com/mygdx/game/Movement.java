@@ -71,10 +71,7 @@ public class Movement {
         }
         return velocity;
     }
-    void bounderies() {
 
-
-    }
 }
 
 
