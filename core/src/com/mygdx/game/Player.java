@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,6 +17,8 @@ public class Player {
     private Texture tiles = new Texture("tiles.png");
     private TextureRegion[][] grid = TextureRegion.split(tiles, 16, 16);
     private Circle boundingCircle;
+    private Sound boostSound;
+    float x, y, xv, yv;
 
     public Player() {
         down = grid[6][0];
@@ -39,12 +43,17 @@ public class Player {
         walkRight = new Animation(0.15f, right, right2);
         boostTime = new Animation(0.15f, boost, boost2);
         boundingCircle = new Circle();
-        boundingCircle.set(MyGdxGame.x + 9, MyGdxGame.y + 6, 6.5f);
+//        boundingCircle.set( + 9, MyGdxGame.y + 6, 1.5f);
+        boostSound = Gdx.audio.newSound(Gdx.files.internal("godlike.wav"));
     }
 
     public TextureRegion getCurrentTexture() {
         return currentTexture;
     }
+
+    public Sound getBoost() {return boostSound;}
+
+    public Circle getBoundingCircle() { return boundingCircle;}
 
     public void update(String o) {
         if (o.equals("forward")) {
@@ -66,4 +75,5 @@ public class Player {
             currentTexture  = boostTime.getKeyFrame(MyGdxGame.time, true);
         }
     }
+
 }

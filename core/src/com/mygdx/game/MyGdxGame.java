@@ -2,28 +2,24 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Intersector;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyGdxGame extends ApplicationAdapter {
 	public static float time;
-	public static float x, y, xv, yv;
+//	public static float x, y, xv, yv;
+	Movement playerMovement;
 	SpriteBatch batch;
-	Texture map, flag;
-	Sound sound;
-	Music music;
-	Integer b;
+//	Sound sound;
 	Player p;
-	Object a;
-
-	final float MAX_VELOCITY = 100;
+	Object hogger, flag;
+	public static Level currentLevel;
+	private HashMap<String, Level> levels;
 	final int WIDTH = 15;
 	final int HEIGHT = 17;
 	final int DRAW_WIDTH = WIDTH * 3;
@@ -31,28 +27,28 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	@Override
 	public void create() {
+		levels = new HashMap<>();
+		levels.put("ironforge", new Level("ironforge.png", "ironforge.mp3"));
+		currentLevel = levels.get("ironforge");
 		batch = new SpriteBatch();
-		map = new Texture("ironforge.png");
-		flag = new Texture("ironforgeFlag.png");
-
-		sound = Gdx.audio.newSound(Gdx.files.internal("godlike.wav"));
-		music = Gdx.audio.newMusic(Gdx.files.internal("ironforge.mp3"));
 		p = new Player();
-		a = new Object();
+		hogger = new Object();
+		flag = new Object();
+		playerMovement = new Movement();
 	}
 
 	@Override
 	public void render() {
 		time += Gdx.graphics.getDeltaTime();
-		moveMainPlayer();
-		bounderies();
+		playerMovement.moveMainPlayer(p);
 		background();
 
 		batch.begin();
-		batch.draw(map, -120, -100, 1340, 870);
-		batch.draw(flag, 10, 300, 150, 160);
-		batch.draw(p.getCurrentTexture(), x, y, DRAW_WIDTH, DRAW_HEIGHT);
-//		batch.draw(a.getWall(), 100, 100, 30, 30);
+		batch.draw(currentLevel.getMap(), -120, -100, 1340, 870);
+		batch.draw(flag.getFlag(), 10, 300, 150, 160);
+		batch.draw(p.getCurrentTexture(), p.x, p.y, DRAW_WIDTH, DRAW_HEIGHT);
+		batch.draw(hogger.getHogger(), 200, 120, 150, 100);
+//		batch.draw(w.getWall(), 100, 100, 40, 40);
 		batch.end();
 
 	}
@@ -60,68 +56,11 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		batch.dispose();
-		sound.dispose();
+//		sound.dispose();
 
 	}
 
-	float decelerate(float velocity) {
-		float deceleration = 0.75f;
-		velocity *= deceleration;
-		if (Math.abs(velocity) < 1) {
-			velocity = 0;
-		}
-		return velocity;
-	}
-	void moveMainPlayer() {
-		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			yv = MAX_VELOCITY * b;
-			p.update("forward");
-		}
-		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			yv = (MAX_VELOCITY * -1) * b;
-			p.update("backward");
-		}
-		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			xv = MAX_VELOCITY * b;
-			p.update("right");
-		}
-		else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			xv = (MAX_VELOCITY * -1) * b;
-			p.update("left");
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			b = 3;
-			music.pause();
-			sound.loop();
-			p.update("boost");
-		} else {
-			b = 1;
-			music.play();
-			sound.stop();
-		}
 
-		if (p.getCurrentTexture() == null) {
-			p.update("default");
-		}
-
-		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-			dispose();
-		}
-
-		//v = d/t == v * t = d
-		y += yv * Gdx.graphics.getDeltaTime();
-		x += xv * Gdx.graphics.getDeltaTime();
-
-		yv = decelerate(yv);
-		xv = decelerate(xv);
-	}
-	void bounderies() {
-		if (x > 650) { x = -40; }
-		if (x < -50) { x = 640; }
-		if (y > 500) { y = -60; }
-		if (y < -70) { y = 490; }
-
-	}
 	void background() {
 		Gdx.gl.glClearColor(250/255f, 240/255f, 230/255f, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
